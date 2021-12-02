@@ -6,7 +6,17 @@
 </head>
 <body>
 <div th:each="person : ${people}">
-    <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName()}">user</a>
+    <h2>
+        <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName()}">user</a>
+        <form th:method="DELETE" th:action="@{/people/delete/{id}(id=${person.getId()})}">
+            <input type="submit" value="Delete"/>
+        </form>
+    </h2>
 </div>
+<form th:method="GET" th:action="@{/people/new}" >
+    <input type="submit" value="Add user"/>
+</form>
+<p th:text="${T(ru.emil.springcourse.models.Person).getTmpName() + ' has been deleted'}">STATUS</p>
+
 </body>
 </html>
