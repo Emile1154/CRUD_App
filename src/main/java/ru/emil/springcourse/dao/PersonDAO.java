@@ -12,10 +12,10 @@ public class PersonDAO {
 
     {
         people = new ArrayList<Person>();
-        people.add(new Person(++id, "Tom"));
-        people.add(new Person(++id, "Jack"));
-        people.add(new Person(++id, "Julia"));
-        people.add(new Person(++id, "Elon"));
+        people.add(new Person(++id, "Tom", 20, "test@mail.ru"));
+        people.add(new Person(++id, "Jack", 25 , "Jack@mail.ru"));
+        people.add(new Person(++id, "Julia", 19, "email@email.ru"));
+        people.add(new Person(++id, "Elon", 45, "tesla@gmail.com"));
     }
 
     public List<Person> getPeople() {

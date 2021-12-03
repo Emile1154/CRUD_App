@@ -13,10 +13,12 @@
         </form>
     </h2>
 </div>
+<hr/>
 <form th:method="GET" th:action="@{/people/new}" >
     <input type="submit" value="Add user"/>
 </form>
-<p th:text="${T(ru.emil.springcourse.models.Person).getTmpName() + ' has been deleted'}">STATUS</p>
-
+<hr/>
+<span style="color:red" th:text="${T(ru.emil.springcourse.models.Person).getTmpName() != null} ? ${T(ru.emil.springcourse.models.Person).getTmpName() + ' has been deleted'}">someValue
+</span>
 </body>
 </html>

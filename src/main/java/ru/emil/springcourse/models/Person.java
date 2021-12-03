@@ -1,15 +1,36 @@
 package ru.emil.springcourse.models;
 
+import org.hibernate.validator.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 public class Person {
     private int id;
+
+    @Size(min = 2, max = 12, message = "name length be between 2 and 12 characters")
     private String name;
-    private String surname;
+
+    @Email(regexp = ".+@.+\\..+",message = "not valid email address")
     private String email;
+
+    @Min(value = 1, message = "age should be greater than 0")
+    private int age;
+
     private static String tmpName;
 
-    public Person(int id, String name) {
+    public Person(int id, String name, int age, String email) {
         this.id = id;
         this.name = name;
+        this.age = age;
+        this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public static String getTmpName() {
@@ -26,14 +47,6 @@ public class Person {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public Person() {}
