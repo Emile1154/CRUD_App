@@ -13,7 +13,7 @@ public class PersonDAO {
     private static final String url_db = "jdbc:mysql://localhost:3306/test_db";
     private static final String userName  = "postgres";
     private static final String password  = "postgres";
-    private static final String const_request = "SELECT * FROM person";;
+    private static final String const_request = "SELECT * FROM person";
     private static Connection connection;
 
     static {
@@ -53,19 +53,19 @@ public class PersonDAO {
     }
 
     public Person show(int id_){
-        String request = const_request + " WHERE id = " + id_;
         try{
-            PreparedStatement statement = connection.prepareStatement(request);
+            PreparedStatement statement = connection.prepareStatement( "SELECT * FROM person WHERE id = ?");
+            statement.setInt(1,id_);
             ResultSet resultSet = statement.executeQuery();
-            while(resultSet.next()){
-                Person founded_person = new Person();
 
-                founded_person.setId(resultSet.getInt("id"));
-                founded_person.setName(resultSet.getString("name"));
-                founded_person.setAge(resultSet.getInt("age"));
-                founded_person.setEmail(resultSet.getString("email"));
-                return founded_person;
-            }
+            resultSet.next();
+
+            Person founded_person = new Person();
+            founded_person.setId(resultSet.getInt("id"));
+            founded_person.setName(resultSet.getString("name"));
+            founded_person.setAge(resultSet.getInt("age"));
+            founded_person.setEmail(resultSet.getString("email"));
+            return founded_person;
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -73,9 +73,13 @@ public class PersonDAO {
     }
 
     public void save(Person person){
-        String request = "INSERT INTO person VALUES(" + ++id + ",'" + person.getName()+ "'," + person.getAge()+",'" + person.getEmail() +"')";
         try {
-            PreparedStatement statement = connection.prepareStatement(request);
+            PreparedStatement statement =
+                    connection.prepareStatement("INSERT INTO person VALUES(?,?,?,?)");
+            statement.setInt(1,++id);
+            statement.setString(2,person.getName());
+            statement.setInt(3,person.getAge());
+            statement.setString(4,person.getEmail());
             statement.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -84,14 +88,13 @@ public class PersonDAO {
     }
 
     public void update(int id_, Person person){
-        String name = String.format("'%s'",person.getName());
-        String email = String.format("'%s'",person.getEmail());
-        int age = person.getAge();
-
-        String request = "UPDATE person SET name = "+ name +", age = " + age + ", email = " + email + " WHERE id = " + id_;
-
         try{
-            PreparedStatement statement = connection.prepareStatement(request);
+            PreparedStatement statement =
+                    connection.prepareStatement("UPDATE person SET name = ?, age = ?, email = ? WHERE id = ?");
+            statement.setString(1,person.getName());
+            statement.setInt(2,person.getAge());
+            statement.setString(3,person.getEmail());
+            statement.setInt(4, id_);
             statement.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -99,10 +102,10 @@ public class PersonDAO {
     }
 
     public void delete(int id_) {
-        String request = "DELETE FROM person WHERE id = " + id_;
         try{
             Person.setTmpName(show(id_).getName());
-            PreparedStatement statement_delete = connection.prepareStatement(request);
+            PreparedStatement statement_delete = connection.prepareStatement("DELETE FROM person WHERE id = ?");
+            statement_delete.setInt(1,id_);
             statement_delete.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
