@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.emil.springcourse.dao.PersonDAO;
 import ru.emil.springcourse.models.Person;
 import javax.validation.Valid;
+import java.sql.SQLException;
 
 @Controller
 @RequestMapping("/people")
